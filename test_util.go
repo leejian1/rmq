@@ -16,6 +16,9 @@ func testRedis(t testing.TB) (options *redis.Options, close func()) {
 
 	if redisAddr, ok := os.LookupEnv("REDIS_ADDR"); ok {
 		return &redis.Options{Addr: redisAddr}, func() {}
+	} else {
+		// Run a local redis server for testing
+		return &redis.Options{Addr: "localhost:6379"}, func() {}
 	}
 
 	mr := miniredis.RunT(t)

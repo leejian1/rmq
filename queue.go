@@ -223,7 +223,7 @@ func (queue *redisQueue) consumeBatch() error {
 		default:
 		}
 
-		payload, err := queue.redisClient.RPopLPush(queue.readyKey, queue.unackedKey)
+		payload, err := queue.redisClient.BRPopLPush(queue.readyKey, queue.unackedKey, 30*time.Minute)
 		if err == ErrorNotFound {
 			return nil
 		}

@@ -58,6 +58,19 @@ func (wrapper RedisWrapper) RPopLPush(source, destination string) (value string,
 	}
 }
 
+func (wrapper RedisWrapper) BRPopLPush(source, destination string, timeout time.Duration) (value string, err error) {
+	value, err = wrapper.rawClient.BRPopLPush(context.TODO(), source, destination, timeout).Result()
+	// println("BRPopLPush", source, destination, value, err)
+	switch err {
+	case nil:
+		return value, nil
+	case redis.Nil:
+		return value, ErrorNotFound
+	default:
+		return value, err
+	}
+}
+
 func (wrapper RedisWrapper) SAdd(key, value string) (total int64, err error) {
 	return wrapper.rawClient.SAdd(context.TODO(), key, value).Result()
 }

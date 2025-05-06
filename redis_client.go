@@ -13,6 +13,7 @@ type RedisClient interface {
 	LLen(key string) (affected int64, err error)
 	LRem(key string, count int64, value string) (affected int64, err error)
 	LTrim(key string, start, stop int64) error
+	BRPopLPush(source, destination string, timeout time.Duration) (value string, err error)
 	RPopLPush(source, destination string) (value string, err error)
 	RPop(key string) (value string, err error)
 
